@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                        http://www.springframework.org/schema/aop   
+                        http://www.springsource.org/schema/aop/spring-aop-3.0.xsd  
+                        http://www.springframework.org/schema/tx  
+                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<!-- 登录检测 -->
+	<bean id="manager.Login" class="com.prism.service.impl.basic.NormalSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<value>
+<![CDATA[
+SELECT U.USER_ID, U.USER_NAME
+  FROM MMSPLATFORM.TB_USER U
+ WHERE U.LOGIN_NAME = ${username}
+   AND U.LOGIN_PWD = MMSPLATFORM.FUNC_MD5(${password})
+]]>
+					</value>
+				</entry>
+				<entry key="VIEW" value="$v.toJson()" />
+			</map>
+		</property>
+	</bean>
+	<bean id="loginAop" class="manager.LoginAop" />
+	<aop:config>
+		<aop:aspect ref="loginAop">
+			<aop:around method="check" pointcut="bean(manager.Login)" />
+		</aop:aspect>
+	</aop:config>
+	<!-- 菜单树 -->
+	<bean id="manager.SysMenu" class="com.prism.service.impl.basic.NormalSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<value>
+<![CDATA[
+SELECT M.MENU_ID,
+       M.MENU_URL,
+       M.MENU_NAME,
+       LEVEL LV,
+       'C' || M.SUP_MENU_ID SUP_MENU
+  FROM MMSPLATFORM.SYS_MENU M
+ WHERE M.MENU_STATUS = 0
+ START WITH M.SUP_MENU_ID = 0
+CONNECT BY PRIOR M.MENU_ID = M.SUP_MENU_ID
+ ORDER SIBLINGS BY M.MENU_ORDER
+]]> 
+					</value>
+				</entry>
+				<entry key="VIEW" value="$v.toJson()" />
+			</map>
+		</property>
+	</bean>
+</beans>

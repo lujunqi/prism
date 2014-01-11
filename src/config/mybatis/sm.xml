@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sm">
+	<select id="sm_priSpec" resultType="hashmap">
+<![CDATA[
+SELECT S.PRI_SPEC_ID,S.MANAGE_CD,S.PRI_SPEC_NAME FROM SM.PRI_SPEC S
+]]>
+	</select>
+	<insert id="t1"  parameterType="java.util.HashMap">
+INSERT INTO TEMP_GROUP
+  SELECT G.GROUP_ID
+    FROM TB_GROUP G
+   WHERE G.GROUP_STATUS = 1
+   START WITH G.GROUP_ID = 1441
+  CONNECT BY PRIOR G.GROUP_ID = G.SUPER_ID	
+  	</insert>
+  	<select id="t2" resultType="hashmap">
+<![CDATA[
+SELECT C.*
+  FROM TB_GROUP_CARD_LINK GC, TB_USER_CARD C, TEMP_GROUP2 G
+ WHERE GC.GROUP_ID = G.GROUP_ID
+   AND GC.CARD_ID = C.CARD_ID
+   AND GC.LINK_STATUS = 1
+   AND C.CARD_STATUS = 1
+   AND ROWNUM < 20
+]]>
+	</select>
+	<insert id="t30">
+	UPDATE TEST0230 SET CARD_NAME = 'HELLO' WHERE CARD_ID = 190
+	</insert>
+</mapper>

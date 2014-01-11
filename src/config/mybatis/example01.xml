@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="e01">
+	<select id="t1120" resultType="hashmap">
+<![CDATA[
+SELECT * FROM USER
+]]>
+	</select>
+	<select id="t01" resultType="hashmap">
+<![CDATA[
+SELECT C.USER_ID,
+       C.USER_NAME,
+	   C.MOBILE,
+	   TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD') CREATE_DATE
+ FROM TB_USER   C ORDER BY C.USER_ID DESC
+]]>
+	</select>
+	<select id="t01Total" resultType="hashmap">
+<![CDATA[
+SELECT COUNT(1) TOTAL
+ FROM TB_USER   C ORDER BY C.USER_ID DESC
+]]>
+	</select>
+
+	<insert id="tran02" parameterType="hashmap">
+		INSERT INTO
+		TEST0829(COL1,COL2)VALUES(1,'22_')
+	</insert>
+	<update id="tran01" parameterType="hashmap">
+		UPDATE TEST0829 SET COL2='11'
+		WHERE COL1 = 1
+	</update>
+	<select id="tran00" resultType="int">
+		SELECT 1 FROM TEST0829 WHERE COL1
+		= 1
+	</select>
+	<select id="t0902" resultType="hashmap">
+<![CDATA[
+SELECT TEU.ENT_USER_ID,
+       TEU.MOBILE,
+       TEU.CREATE_DATE,
+       TEU.USER_STATUS,
+       TEU.IMEI,
+       TEU.IMSI,
+       TEU.USER_NAME,
+       TEU.MANUFACTURER,
+       TEU.MODEL,
+       TEU.RELEASE,
+       TEU.TXL_VERSION,
+       0 AS UPDATE_TIMES,
+       DECODE(TEU.LOGIN_PWD, NULL, '邀请加入通信录', '提醒更新通信录') AS OPERATOR_NAME,
+       DECODE(TEU.LOGIN_PWD, NULL, '0', '1') AS OPERATOR_TYPE,
+       FUNC_GROUP_NAME_FIRST(TEU.MOBILE) GROUP_NAME_FIRST
+  FROM TB_ENT_USER TEU
+ WHERE TEU.ENT_ID = 713
+   AND TEU.USER_STATUS = 0
+]]>
+	</select>
+</mapper>

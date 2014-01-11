@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- SQL -->
+	<bean id="select" class="com.prism.service.impl.basic.NormalSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="JSON" value="groupType"></entry>
+				<entry key="DSQL">
+					<value>
+<![CDATA[
+SELECT G.GROUP_ID, G.GROUP_NAME, G.GROUP_TYPE
+  FROM TB_GROUP G
+ WHERE G.SUPER_ID = 0
+   AND G.GROUP_STATUS = 1
+   AND G.GROUP_ID IN (${v.sets("groupType")})
+]]>
+					</value>
+				</entry>
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="ntest1" class="com.prism.service.impl.basic.NormalSltService">
+		<property name="sourceMap">
+			<map>
+
+				<entry key="SQL">
+					<value>
+<![CDATA[
+SELECT *
+  FROM TB_USER U
+ WHERE U.LOGIN_NAME = ${loginName}
+]]>
+					</value>
+				</entry>
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+
+
+	<!-- DML -->
+	<bean id="update" class="com.prism.service.impl.basic.NormalUptService">
+		<property name="sourceMap">
+			<map>
+
+				<entry key="DSQL">
+					<value>
+<![CDATA[
+UPDATE TB_USER_CARD C
+   SET C.NAME = ${v.set("name","STRING")}
+ WHERE C.CARD_ID = ${v.set("cardId")}
+]]>
+					</value>
+				</entry>
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- CALL -->
+	<bean id="call" class="com.prism.service.impl.basic.NormalCallService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<value>
+					<![CDATA[{call PROC_TEST(${name<STRING>},${id<INT>},#{result<STRING>})}]]>
+					</value>
+				</entry>
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+	<!-- myBatis************************************************ -->
+	<!-- SELECT -->
+	<bean id="iSelect" class="com.prism.service.impl.basic.MybatisSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="sm_priSpec" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- 事务处理 -->
+	<bean id="t1" class="com.prism.service.impl.basic.MybatisInstService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="t1" />
+				<entry key="ALIAS" value="t1" />
+			</map>
+		</property>
+	</bean>
+	<bean id="t2" class="com.prism.service.impl.basic.MybatisSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="t2" />
+				<entry key="ALIAS" value="t2" />
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="iTransaction" class="com.prism.service.impl.basic.MybatisTransactionService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<list>
+						<ref bean="t1" />
+
+						<ref bean="t2" />
+					</list>
+				</entry>
+				<entry key="VIEW" value="${v.toJson()}1" />
+			</map>
+		</property>
+	</bean>
+	
+</beans>

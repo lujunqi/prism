@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="e02">
+	<select id="t1" resultType="hashmap">
+<![CDATA[
+SELECT TEU.ENT_USER_ID,
+       TEU.MOBILE,
+       TEU.CREATE_DATE,
+       TEU.USER_STATUS,
+       TEU.IMEI,
+       TEU.IMSI,
+       TEU.USER_NAME,
+       TEU.MANUFACTURER,
+       TEU.MODEL,
+       TEU.RELEASE,
+       TEU.TXL_VERSION,
+       0 AS UPDATE_TIMES,
+       DECODE(TEU.LOGIN_PWD, NULL, '邀请加入通信录', '提醒更新通信录') AS OPERATOR_NAME,
+       DECODE(TEU.LOGIN_PWD, NULL, '0', '1') AS OPERATOR_TYPE
+  FROM TB_ENT_USER TEU
+ WHERE TEU.ENT_ID = #{id,jdbcType=VARCHAR}
+   AND TEU.USER_STATUS = 0
+   AND ROWNUM < 30
+]]>
+	</select>
+	<select id="t1Total" resultType="hashmap">
+<![CDATA[
+SELECT COUNT(1) TOTAL
+  FROM TB_ENT_USER TEU
+ WHERE TEU.ENT_ID = 713
+   AND TEU.USER_STATUS = 0
+   AND ROWNUM < 30
+]]>
+	</select>
+	
+</mapper>

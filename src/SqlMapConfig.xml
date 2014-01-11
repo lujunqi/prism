@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<!--  
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@221.182.47.84:15210:sckb" />
+				<property name="username" value="usr_sckb" />
+				<property name="password" value="usr_sckb_2013" />
+				<property name="poolMaximumActiveConnections" value="100"/> 
+				<property name="poolMaximumIdleConnections" value="0"/>
+			</dataSource>
+			
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@192.168.1.14:1521:qqdb" />
+					<property name="username" value="txl123" />
+					<property name="password" value="txl123" />
+				<property name="poolMaximumActiveConnections" value="100"/> 
+				<property name="poolMaximumIdleConnections" value="0"/>
+			</dataSource>
+			-->
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.jdbcx.JdbcDataSource" />
+				<property name="url" value="jdbc:h2:~/h2db/test;DB_CLOSE_DELAY=-1" />
+					<property name="username" value="sa" />
+					<property name="password" value="" />
+				<property name="poolMaximumActiveConnections" value="100"/> 
+				<property name="poolMaximumIdleConnections" value="0"/>
+			</dataSource>
+		</environment>
+		<!--
+		<environment id="MYJNDI">
+			<transactionManager type="JDBC" />
+			<dataSource type="JNDI">
+				<property name="initial_context" value="java:comp/env" />
+				<property name="data_source" value="/jdbc/DB" />
+			</dataSource>
+		</environment>
+		-->
+	</environments>
+	<mappers>
+		<mapper resource="config/mybatis/sm.xml" />
+		<mapper resource="config/mybatis/example01.xml" />
+		<mapper resource="config/mybatis/example02.xml" />
+		
+	</mappers>
+</configuration>

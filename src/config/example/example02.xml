@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 测试1 -->
+	<bean id="t0201" class="com.prism.service.impl.basic.MybatisSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="e02.t1" />
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+	<bean id="t1120" class="com.prism.service.impl.basic.MybatisSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="e01.t1120" />
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 测试2 -->
+	<bean id="t0202" class="com.prism.service.impl.basic.MybatisTransService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<list>
+						<value>SELECT:e02.t1</value>
+					</list>
+				</entry>
+				<entry key="VIEW" >
+				<value>
+$v.toJson("e02_t1")
+				</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

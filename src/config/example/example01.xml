@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 测试1 -->
+	<bean id="test1" class="com.prism.service.impl.basic.NormalHTMLService">
+		<property name="sourceMap">
+			<map>
+				<entry key="TITLE" value="卡布用户" />
+				<entry key="MAPPING">
+					<list>
+						<map>
+							<entry key="DATA" value="#@USER_ID#" />
+							<entry key="TITLE" value="用户ID" />
+						</map>
+						<map>
+							<entry key="DATA" value="#@USER_NAME#" />
+							<entry key="TITLE" value="用户名" />
+						</map>
+						<map>
+							<entry key="DATA" value="#@MOBILE#" />
+							<entry key="TITLE" value="手机号码" />
+						</map>
+						<map>
+							<entry key="DATA" value="#@CREATE_DATE#" />
+							<entry key="TITLE" value="创建时间" />
+						</map>
+
+					</list>
+				</entry>
+				<entry key="SELECT">
+					<list>
+						<map>
+							<entry key="TITLE" value="统计时间" />
+							<entry key="ID" value="rpt_date" />
+							<entry key="TYPE" value="INPUT" />
+						</map>
+
+					</list>
+				</entry>
+				<entry key="DATAURL" value="t01.do" />
+				<entry key="PAGETOTAL" value="t01Total.do" />
+
+				<entry key="TEMPLATE" value="template/TableList01.jsp" />
+			</map>
+		</property>
+	</bean>
+	<bean id="t01" class="com.prism.service.impl.basic.MybatisSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="e01.t01" />
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+	<bean id="t01Total" class="com.prism.service.impl.basic.MybatisSltService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL" value="e01.t01Total" />
+				<entry key="VIEW" value="${v.toJson()}" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- mybatis事务处理 -->
+	<bean id="t30" class="com.prism.service.impl.basic.MybatisTransService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<list>
+						<value>SELECTONE:e01.tran00</value>
+						<value>UPDATE:e01.tran01</value>
+						<value>INSERT:e01.tran02</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="t31" class="com.prism.service.impl.basic.MybatisTransService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<value><![CDATA[
+#set($count = $dao.update("e01.tran01",$req))
+#if($count==0)
+$dao.insert("e01.tran02",$req)
+#end
+					]]></value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- prism include数据 -->
+	<bean id="t0902" class="com.prism.service.impl.basic.MybatisTransService">
+		<property name="sourceMap">
+			<map>
+				<entry key="SQL">
+					<list>
+						<value>SELECTONE:e01.t0902</value>
+					</list>
+				</entry>
+				<entry key="VIEW">
+					<value><![CDATA[
+<tr>
+  <td>#@MOBILE#</td>
+  <td>#@USER_STATUS#</td>
+  <td>#@USER_NAME#</td>
+  <td>#@TXL_VERSION#</td>
+  
+</tr>
+				]]></value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- <bean id="t32" class="com.prism.service.impl.basic.MybatisTransService"> 
+		<property name="sourceMap"> <map> <entry key="SQL"> <ref bean="dataSource" 
+		/> </entry> </map> </property> </bean> -->
+	<!-- Excel -->
+
+	<bean id="excelOut" class="com.prism.service.impl.basic.ExcelOutputService">
+		<property name="sourceMap">
+			<map>
+				<entry key="DATASOURCE">
+					<ref bean="t01" />
+				</entry>
+				<entry key="SAVEPATH" value="excel" />
+				<entry key="RULE">
+					<value>
+<![CDATA[
+$excel.add(1,1,"xxx")
+]]>
+					</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

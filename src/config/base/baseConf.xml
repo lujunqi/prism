@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                        http://www.springframework.org/schema/aop   
+                        http://www.springsource.org/schema/aop/spring-aop-3.0.xsd  
+                        http://www.springframework.org/schema/tx  
+                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+                            
+	<!-- 数据库连接 提供三种连接数据库的方式 三选一-->
+	<bean id="DBConnection" class="com.prism.dbutil.DBConnection" scope="prototype">
+		<!-- JNDI方式连接数据库 -->
+		 <property name="JNDI" value="java:comp/env/jdbc/DB" />
+		<!-- JDBC方式连接数据库 -->
+		<!-- 
+		<property name="JDBC">
+			<map>
+				<entry key="username" value="quanquan" />
+				<entry key="password" value="trendsnet" />
+				<entry key="url"
+					value="jdbc:oracle:thin:@192.168.1.14:1521:qqdb" />
+				<entry key="driverClassName" value="oracle.jdbc.OracleDriver"/>				
+			</map>
+		</property>
+		 --> 
+		 <!-- 自定的数据库连接 -->
+		 <!-- 
+		 <property name="CONN">
+		 	<ref bean="otherConnection"/>
+		 </property>
+		  -->
+	</bean>
+	
+
+	<import resource="../example/example01.xml"/>
+	<import resource="../example/example02.xml"/>
+	
+	
+	
+</beans>

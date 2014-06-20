@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>prism表单验证</title>
+<style type="text/css">
+body {
+	font-size: 12px;
+}
+pre {
+	background: #CCC;
+	padding: 10px;
+}
+</style>
+<link href="prism/prism.2.0.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="prism/validator.js"></script>
+<script type="text/javascript" src="prism/jquery.prism.2.0.js"></script>
+<script type="text/javascript">
+$(init);
+function init(){
+	$("#sub").click(function(){
+		var fv = $("#validatorDemo").formValidator();
+		if(fv.length>0){
+			alert("验证不通过");
+		}else{
+			alert("验证通过!");
+		}
+	});
+}
+function funcDemo1(el,value){
+	if(value=="y"){
+		return true;
+	}else{
+		return false;
+	}
+}
+function funcDemo2(el,value){
+	var validaParam = el.data("validaParam");
+	var key = validaParam["key"];
+	if(key=="y"){
+		return true;
+	}else{
+		return false;
+	}
+}
+function funcValida(){
+	var param = {};
+    param["key"] = $("#textDemo1").val();
+    return param;
+}
+
+</script>
+</head>
+
+<body>
+
+<form id="validatorDemo">
+  <li style="font-weight:bold;">基础用法</li>
+  <li>非空判断:
+    <input type="text" valida="isNotNull" validaMsg="请输入内容"/>
+    <em></em></li>
+  <pre>
+&lt;input type="text" <b>valida="isNotNull"</b> validaMsg="请输入内容"/&gt;
+isNotNull为非空判断函数
+</pre>
+  <li>数字判断:
+    <input type="text" valida="isNumber" validaMsg="只能输入数字"/>
+    <em></em></li>
+  <li>AJAX服务器判断:
+    <input type="text" valida="ajax" name="key" validaParam='{"url":"testAjax.php"}' validaMsg="服务器验证不通过"/>
+    <em></em></li>
+  <pre>
+testAjax.php:
+&lt;?php
+	echo '{"status":"'.$_REQUEST["key"].'"}';
+?&gt;
+如果返回{status:"y"}则验证通过
+</pre>
+  <li>字符长度:
+    <input type="text" valida="vLength" validaParam='{"min":5,"max":10}' validaMsg="输入长度范围在6~10位之间"/>
+    <em></em></li>
+  <pre>
+validaParam 中 min最小限制 max最大限制
+</pre>
+  <li>是否邮箱:
+    <input type="text" valida="isEmail" validaMsg="输入的邮箱格式"/>
+    <em></em></li>
+  <li>判断文件格式:
+    <input type="file" valida="isImg" validaParam='{"type":"jpg|gif"}' validaMsg="只能输入jpg,gif格式的文件 "/>
+    <em></em></li>
+  <pre>
+validaParam 中 type限制文件格式类型，多格式时|分割
+</pre>
+  <li>单选框:
+    <input type="radio" name="radioDemo" value="1" valida="isNotNull" validaMsg="请输入内容"/>
+    <input type="radio" name="radioDemo" value="2" valida="isNotNull" validaMsg="请输入内容"/>
+    <input type="radio" name="radioDemo" value="3" valida="isNotNull" validaMsg="请输入内容"/>
+    <input type="radio" name="radioDemo" value="4" valida="isNotNull" validaMsg="请输入内容"/>
+    <em></em></li>
+  <li>复选框:
+    <input type="checkbox" name="checkboxDemo" value="1" valida="isNotNull" validaMsg="请输入内容"/>
+    <input type="checkbox" name="checkboxDemo" value="2" valida="isNotNull" validaMsg="请输入内容"/>
+    <input type="checkbox" name="checkboxDemo" value="3" valida="isNotNull" validaMsg="请输入内容"/>
+    <input type="checkbox" name="checkboxDemo" value="4" valida="isNotNull" validaMsg="请输入内容"/>
+    <em></em></li>
+  <li>多行文本：
+    <textarea valida="isNotNull" validaMsg="请输入内容"></textarea>
+    <em></em></li>
+  <li>下拉框:
+    <select valida="isNotNull" validaMsg="请输入内容">
+      <option value="">请选择</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <em></em></li>
+  <li style="font-weight:bold;">高级用法</li>
+  <li>自定义函数:
+    <input type="text" valida="funcDemo1" validaMsg="输入y验证通过，否则验证失败"/>
+    <em></em></li>
+  <pre>
+&lt;input type="text" <b>valida="funcDemo1"</b> validaMsg="输入y验证通过，否则验证失败"/&gt;
+funcDemo1 为自定义校验函数
+/**
+ * 校验函数
+ * 参数el元素对象 value元素取值
+ * 如果自定义参数key=y则验证通过，否则验证通过
+**/
+function funcDemo1(el,value){
+	if(value=="y"){
+		return true;
+	}else{
+		return false;
+	}
+}
+</pre>
+  <li>自定义带入参函数:
+    <input type="text" valida="funcDemo2" validaParam='{"key":"n"}' validaMsg="如果参数key=y验证通过，否则验证失败"/>
+    <em></em></li>
+  <pre>
+/**
+ * 校验函数
+ * 如果自定义参数key=y则验证通过，否则验证通过
+**/
+function funcDemo2(el,value){
+	var validaParam = el.data("validaParam");
+	var key = validaParam["key"];
+	if(key=="y"){
+		return true;
+	}else{
+		return false;
+	}
+}
+/**加粗部分为自定义参数**/
+&lt;input type="text" valida="funcDemo2" <b>validaParam='{"key":"n"}'</b> validaMsg="如果参数key=y验证通过，否则验证失败" /&gt;
+</pre>
+  <li>设置复杂入参:<br />
+    验证项：
+    <input type="text" valida="funcDemo2" validaParam='FUNC:funcValida' validaMsg="如果约束项输入为y验证通过，否则验证失败"/>
+    <em></em> 约束项：
+    <input type="text" id="textDemo1" style="width:15px;"/>
+  </li>
+  <pre>
+/**
+ * 校验函数
+ * 如果自定义参数key=y则验证通过，否则验证通过
+**/
+function funcDemo2(el,value){
+	var validaParam = el.data("validaParam");
+	var key = validaParam["key"];
+	if(key=="y"){
+		return true;
+	}else{
+		return false;
+	}
+}
+/**
+* 自定义参数设置函数
+* 自定义参数key的值为约束项的输入值$("#textDemo1")
+*/
+function funcValida(){
+    var param = {};
+    param["key"] = $("#textDemo1").val();
+    return param;
+}
+
+</pre>
+  <li>多重验证：
+    <input type="text" valida="isNotNull,funcDemo2" validaParam='{"key":"n"}' validaMsg="非空或者funcDemo2验证不通过"/>
+    <em></em></li>
+  <pre>
+   必须多种验证通过才能算通过,多个验证用“,”号分隔
+</pre>
+  <li>
+    <input type="button" id="sub" value="提交"/>
+  </li>
+</form>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>prism2.0数据列表</title>
+<style type="text/css">
+h3 {
+	font-size: 12px;
+}
+table {
+	background: #ccc;
+}
+th, td {
+	background: #FFF;
+	padding:5px;
+	font-size: 12px;
+}
+.qj {
+	color: #F00;
+}
+pre {
+	background: #CCC;
+	padding: 10px;
+}
+</style>
+<link href="prism/prism.2.0.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="prism/validator.js"></script>
+<script type="text/javascript" src="prism/jquery.prism.2.0.js"></script>
+<script type="text/javascript">
+$(init);
+function init(){
+	funcDemo1();
+	funcDemo2();
+	funcDemo3();
+	funcDemo4();
+	funcDemo5();
+	funcDemo6();
+	
+}
+function funcDemo1(){
+	$("#btnDemo1").click(function(){
+		var $content = [{id:1,name:"name1"},{id:2,name:"name2"},{id:3,name:"name3"},{id:4,name:"name4"},{id:5,name:"name5"},{id:6,name:"name6"},{id:7,name:"name7"}];
+		$("#demo1").prism({
+			content: $content
+		});
+	});
+}
+function funcDemo2(){
+	$("#btnDemo2").click(function(){
+	var $content ='[{"id":1,"name":"name1"},{"id":2,"name":"name2"},{"id":3,"name":"name3"},{"id":4,"name":"name4"},{"id":5,"name":"name5"},{"id":6,"name":"name6"},{"id":7,"name":"name7"}]';
+	$("#demo2").prism({
+		content: "json:"+$content
+	});
+	});
+}
+function funcDemo3(){
+	$("#btnDemo3").click(function(){
+		$("#demo3").prism({
+			content: "ajax:dataGrid.json"
+		});
+	});
+}
+function funcDemo4(){
+	$("#btnDemo4").click(function(){
+		$("#demo4").prism({
+			content: "ajax:dataGrid.json",
+			begin:function(el){
+				loadingOne("show");
+//				alert("开始加载数据");
+			},
+			end:function(el,data){
+//				alert("加载数据完毕");
+				loadingOne("hide");
+			}
+		});
+	});
+}
+function loadData(){
+	
+}
+function funcDemo5(){
+	$("#btnDemo5").click(function(){
+		$("#demo5").prism({
+			content: "ajax:dataGrid.json"
+		});
+	});
+}
+function getSexName(data){
+	if(data["sex"] == 1){
+		return "男";
+	}else if(data["sex"] == 2){
+		return "女";
+	}else{
+		return "保密";
+	}
+}
+function funcDemo6(){
+	$("#btnDemo6").click(function(){
+		$("#demo6").prism({
+			content: "ajax:dataGrid.json",
+			pageUrl:"dataGridTotal.json"
+		});
+	});
+}
+</script>
+</head>
+
+<body>
+<div>
+  <h3>1、列表一[JSON<span class="qj">对象</span>为数据源]</h3>
+  <table width="200" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+    </tr>
+    <tbody id="demo1" prism="dataGrid">
+      <tr>
+        <td>#@id#</td>
+        <td>#@name#</td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="button" id="btnDemo1" value="运行»" /> </div>
+<div>
+  <h3>2、列表二[JSON<span class="qj">字符串</span>为数据源]</h3>
+  <table width="200" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+    </tr>
+    <tbody id="demo2" prism="dataGrid">
+      <tr>
+        <td>#@id#</td>
+        <td>#@name#</td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="button" id="btnDemo2" value="运行»" /> </div>
+<div>
+  <h3>3、列表三[AJAX请求数据源]</h3>
+  <table width="200" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+    </tr>
+    <tbody id="demo3" prism="dataGrid">
+      <tr>
+        <td>#@id#</td>
+        <td>#@name#</td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="button" id="btnDemo3" value="运行»" />
+<pre>
+dataGrid.json内容：
+[{"id":1,"name":"name1","sex":1},{"id":2,"name":"name2","sex":2}...{"id":7,"name":"name7","sex":2}]
+</pre>
+  </div>
+  <div>
+  <h3>4、开始加载和加载完回调函数</h3>
+  <table width="200" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+    </tr>
+    <tbody id="demo4" prism="dataGrid">
+      <tr>
+        <td>#@id#</td>
+        <td>#@name#</td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="button" id="btnDemo4" value="运行»" />
+<pre>
+$("#btnDemo4").click(function(){
+    $("#demo4").prism({
+        content: "ajax:dataGrid.json",
+        begin:function(el){
+        	alert("开始加载数据");
+        },
+        end:function(el,data){
+        	alert("加载数据完毕");
+        }
+    });
+});
+</pre>  
+  </div>
+  <div>
+  <h3>5、显示列引用函数[#@func:函数名#]</h3>
+  <table width="200" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>SEX</th>
+      <th>性别</th>
+    </tr>
+    <tbody id="demo5" prism="dataGrid">
+      <tr>
+        <td>#@id#</td>
+        <td>#@name#</td>
+        <td>#@sex#</td>
+        <td>#@func:getSexName#</td>
+        
+      </tr>
+    </tbody>
+  </table>
+  <input type="button" id="btnDemo5" value="运行»" />
+<pre>
+function getSexName(data){
+	if(data["sex"] == 1){
+		return "男";
+	}else if(data["sex"] == 2){
+		return "女";
+	}else{
+		return "保密";
+	}	
+}
+</pre>
+  </div>
+  <div>
+  <h3>6、数据加翻页</h3>
+  <table width="650" border="0" cellpadding="0" cellspacing="1">
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>性别</th>
+    </tr>
+    <tbody id="demo6" prism="dataGrid">
+      <tr>
+        <td>#@id#</td>
+        <td>#@name#</td>
+        <td>#@func:getSexName#</td>
+      </tr>
+    </tbody>
+    <tfoot>
+    <tr><td colspan="3" nowrap="nowrap" class="page"></td></tr>
+    </tfoot>
+  </table>
+  <input type="button" id="btnDemo6" value="运行»" /></div>
+  <div>
+</body>
+</html>

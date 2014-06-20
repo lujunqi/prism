@@ -68,13 +68,12 @@ isNotNull为非空判断函数
     <input type="text" valida="isNumber" validaMsg="只能输入数字"/>
     <em></em></li>
   <li>AJAX服务器判断:
-    <input type="text" valida="ajax" name="key" validaParam='{"url":"testAjax.php"}' validaMsg="服务器验证不通过"/>
+    <input type="text" valida="ajax" name="key" validaParam='{"url":"testAjax.json"}' validaMsg="服务器验证不通过"/>
     <em></em></li>
   <pre>
-testAjax.php:
-&lt;?php
-	echo '{"status":"'.$_REQUEST["key"].'"}';
-?&gt;
+testAjax.json:
+{"status":"y"}
+
 如果返回{status:"y"}则验证通过
 </pre>
   <li>字符长度:

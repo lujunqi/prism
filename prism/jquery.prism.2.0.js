@@ -129,6 +129,9 @@ function getAjaxContent(opt,$this,html){
 			}
 			/** 完成时回调 **/
 			func_Finish(data,opt,$this);
+		},
+		error:function(){
+			alert("Ajax请求失败！");
 		}
 	});
 }

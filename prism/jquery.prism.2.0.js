@@ -135,7 +135,6 @@ function getAjaxContent(opt,$this,html){
 				opt["error"](XMLHttpRequest, textStatus, errorThrown);
 			}
 		}
-		}
 	});
 }
 //回填数据

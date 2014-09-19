@@ -130,8 +130,11 @@ function getAjaxContent(opt,$this,html){
 			/** 完成时回调 **/
 			func_Finish(data,opt,$this);
 		},
-		error:function(){
-			alert("Ajax请求失败！");
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			if(opt["error"]!=null){
+				opt["error"](XMLHttpRequest, textStatus, errorThrown);
+			}
+		}
 		}
 	});
 }
